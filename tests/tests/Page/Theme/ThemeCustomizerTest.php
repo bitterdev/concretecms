@@ -55,7 +55,7 @@ class ThemeCustomizerTest extends ConcreteDatabaseTestCase
         $theme->setThemeHandle('atomik');
         $this->assertTrue($theme->hasPresetSkins());
         $skins = $theme->getPresetSkins();
-        $this->assertCount(2, $skins);
+        $this->assertCount(6, $skins);
     }
 
     public function testGetElementalThemeSkins()
@@ -94,8 +94,8 @@ class ThemeCustomizerTest extends ConcreteDatabaseTestCase
         $theme->setThemeHandle('atomik');
         $customizer = $theme->getThemeCustomizer();
         $presets = $customizer->getPresets($theme);
-        $this->assertCount(2, $presets);
-        foreach (['Default', 'Rustic Elegance'] as $i => $presetName) {
+        $this->assertCount(6, $presets);
+        foreach (['Default', 'Amber Twilight', 'Coastal Breeze', 'Golden Meadow', 'Misty Sage', 'Rustic Elegance'] as $i => $presetName) {
             $this->assertEquals($presets[$i]->getName(), $presetName);
         }
     }
