@@ -107,7 +107,7 @@ class ThemeCustomizerTest extends ConcreteDatabaseTestCase
         $customizer = $theme->getThemeCustomizer();
         $presets = $customizer->getPresets($theme);
         $this->assertCount(4, $presets);
-        foreach (['Blue Sky', 'Sunrise', 'Night Road', 'Royal'] as $i => $presetName) {
+        foreach (['Blue Sky', 'Night Road', 'Royal', 'Sunrise'] as $i => $presetName) {
             $this->assertEquals($presets[$i]->getName(), $presetName);
         }
     }
