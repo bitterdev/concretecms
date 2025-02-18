@@ -438,6 +438,13 @@ mix
             ]
         }
     })
+    .sass('../concrete/themes/atomik/css/presets/midnight-velvet/main.scss', 'themes/atomik/css/skins/midnight-velvet.css', {
+        sassOptions: {
+            includePaths: [
+                path.resolve(__dirname, './node_modules/')
+            ]
+        }
+    })
     .js('assets/themes/atomik/js/main.js', 'themes/atomik').vue()
 
 
