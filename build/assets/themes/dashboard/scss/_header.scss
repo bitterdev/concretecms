@@ -49,6 +49,9 @@ div#ccm-dashboard-content {
           margin-right: 3px;
           // SVG cant render $gray-700 variable, you need to use interpolation and works like a charm
           --icon-color: #{$gray-700};
+          @include color-mode(dark) {
+            --icon-color: #{$gray-200};
+          }
 
           &.bookmarked {
             --icon-color: #{$blue};
@@ -64,6 +67,9 @@ div#ccm-dashboard-content {
         margin-bottom: auto;
         line-height: 1.5rem;
         color: $gray-700;
+        @include color-mode(dark) {
+          color: $gray-200;
+        }
       }
 
       //background-color: #f3f3f3;

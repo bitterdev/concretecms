@@ -380,6 +380,7 @@ mix
             ]
         }
     })
+
 // The CMS entry point
 mix
     .sass('assets/cms.scss', 'css/cms.css', {
@@ -390,6 +391,7 @@ mix
         }
     })
     .js('assets/cms.js', 'js/cms.js').vue()
+
 
 // Elemental Theme
 mix.js('assets/themes/elemental/js/main.js', 'themes/elemental').vue()
@@ -447,7 +449,6 @@ mix
     })
     .js('assets/themes/atomik/js/main.js', 'themes/atomik').vue()
 
-
 // Dashboard Theme
 mix
     .sass('assets/themes/dashboard/scss/main.scss', 'themes/dashboard', {
@@ -461,7 +462,6 @@ mix
 
 // Core Themes
 // Concrete Theme
-
 mix
     .sass('assets/themes/concrete/scss/main.scss', 'themes/concrete', {
         sassOptions: {
