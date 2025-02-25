@@ -392,7 +392,6 @@ mix
     })
     .js('assets/cms.js', 'js/cms.js').vue()
 
-
 // Elemental Theme
 mix.js('assets/themes/elemental/js/main.js', 'themes/elemental').vue()
 

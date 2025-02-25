@@ -21,11 +21,16 @@ div#ccm-dashboard-content {
       line-height: inherit;
       color: $gray-700;
       border-bottom: 1px solid $gray-200;
-      @include color-mode(dark) {
-        color: $gray-300;
-        border-bottom: 1px solid $gray-700;
-      }
     }
   }
 
+}
+
+@include color-mode(dark) {
+  div#ccm-dashboard-content {
+    h2 {
+      color: $gray-300;
+      border-bottom: 1px solid $gray-700;
+    }
+  }
 }

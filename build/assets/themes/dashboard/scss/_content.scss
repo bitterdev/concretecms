@@ -13,9 +13,6 @@ div#ccm-dashboard-content {
 
   p {
     color: $gray-700;
-    @include color-mode(dark) {
-      color: $gray-200;
-    }
   }
 
 
@@ -25,9 +22,6 @@ div#ccm-dashboard-content {
     margin-right: $dashboard-content-padding-r;
     padding-top: $dashboard-content-padding-t;
     border-top: 1px solid $gray-200;
-    @include color-mode(dark) {
-      border-top: 1px solid $gray-700;
-    }
 
     @include media-breakpoint-down(md) {
       margin-top: $dashboard-content-padding-t;
@@ -37,9 +31,6 @@ div#ccm-dashboard-content {
   /* full width pages (like stacks & blocks, search pages) */
   div#ccm-dashboard-content-full {
     border-top: 1px solid $gray-200;
-    @include color-mode(dark) {
-      border-top: 1px solid $gray-700;
-    }
   }
 
   /* Need the standard padding on a full width page? Use this class below */
@@ -60,5 +51,22 @@ div#ccm-dashboard-content {
 
   }
 }
+
+@include color-mode(dark) {
+  div#ccm-dashboard-content {
+    p {
+      color: $gray-200;
+    }
+
+    div#ccm-dashboard-content-regular {
+      border-top: 1px solid $gray-700;
+    }
+
+    div#ccm-dashboard-content-full {
+      border-top: 1px solid $gray-700;
+    }
+  }
+}
+
 
 

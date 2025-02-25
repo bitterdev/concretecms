@@ -49,9 +49,6 @@ div#ccm-dashboard-content {
           margin-right: 3px;
           // SVG cant render $gray-700 variable, you need to use interpolation and works like a charm
           --icon-color: #{$gray-700};
-          @include color-mode(dark) {
-            --icon-color: #{$gray-200};
-          }
 
           &.bookmarked {
             --icon-color: #{$blue};
@@ -67,9 +64,6 @@ div#ccm-dashboard-content {
         margin-bottom: auto;
         line-height: 1.5rem;
         color: $gray-700;
-        @include color-mode(dark) {
-          color: $gray-200;
-        }
       }
 
       //background-color: #f3f3f3;
@@ -103,7 +97,7 @@ div#ccm-dashboard-content {
       ul.ccm-dashboard-header-icons {
 
         @include list-unstyled();
-        margin-bottom: 0px;
+        margin-bottom: 0;
 
         a {
           color: $body-color;
@@ -137,4 +131,22 @@ div#ccm-dashboard-content {
     display: none;
   }
 
+}
+
+@include color-mode(dark) {
+  div#ccm-dashboard-content {
+    header {
+      div.ccm-dashboard-header-title {
+        .header-icon {
+          .icon-bookmark {
+            --icon-color: #{$gray-200};
+          }
+        }
+
+        h1 {
+          color: $gray-200;
+        }
+      }
+    }
+  }
 }
