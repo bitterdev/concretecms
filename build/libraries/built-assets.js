@@ -113,6 +113,7 @@ function getBuiltFiles()
         'themes/atomik/css/skins/coastal-breeze.css',
         'themes/atomik/css/skins/misty-sage.css',
         'themes/atomik/css/skins/golden-meadow.css',
+        'themes/atomik/css/skins/midnight-velvet.css',
         'themes/atomik/main.js',
         'themes/concrete/main.css',
         'themes/concrete/main.js',
