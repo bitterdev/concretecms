@@ -315,11 +315,11 @@ class PageListTest extends PageTestCase
         $results = $nl->getPagination()->setMaxPerPage(10)->getCurrentPageResults();
         $this->assertEquals(18, $total);
         $this->assertCount(10, $results);
-        $this->assertTrue($results[2]->isAlias());
-        $this->assertEquals('Another Fun Page', $results[2]->getCollectionName());
-        $this->assertEquals($results[2]->getCollectionID(), $subject->getCollectionID());
-        $this->assertEquals(20, $results[2]->getCollectionPointerOriginalID());
-        $this->assertEquals(8, $results[2]->getCollectionID());
+        $this->assertTrue($results[1]->isAlias());
+        $this->assertEquals('Another Fun Page', $results[1]->getCollectionName());
+        $this->assertEquals($results[1]->getCollectionID(), $subject->getCollectionID());
+        $this->assertEquals(20, $results[1]->getCollectionPointerOriginalID());
+        $this->assertEquals(8, $results[1]->getCollectionID());
     }
 
     public function testIndexedSearch()
@@ -365,6 +365,34 @@ class PageListTest extends PageTestCase
         $nl->filterByPath('/test-page-1', false);
         $pagination = $nl->getPagination();
         $this->assertEquals(1, $pagination->getNBResults());
+    }
+
+    public function testFilterByMultiplePaths()
+    {
+        $this->createPage('More Fun', '/test-page-1/foobler');
+        $this->createPage('Extreme Fun', '/test-page-2');
+
+        $this->list->filterByPath('/test-page-1');
+        $this->list->filterByPath('/test-page-2');
+        $totalResults = $this->list->getTotalResults();
+        $this->assertEquals(4, $totalResults);
+    }
+
+    public function testFilterByPathWithArray()
+    {
+        $this->createPage('More Fun', '/test-page-1/foobler');
+
+        $this->list->filterByPath(['/test-page-1']);
+        $totalResults = $this->list->getTotalResults();
+        $this->assertEquals(18, $totalResults);
+    }
+
+    public function testFilterByPagesWithCustomStyles()
+    {
+        $this->list->filterByPagesWithCustomStyles();
+        $this->list->filterByPagesWithCustomStyles();
+        $totalResults = $this->list->getTotalResults();
+        $this->assertEquals(0, $totalResults);
     }
 
     public function testBasicFeedSave()
