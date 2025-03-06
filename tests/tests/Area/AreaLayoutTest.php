@@ -122,7 +122,6 @@ class AreaLayoutTest extends ConcreteDatabaseTestCase
 
         $this->assertEquals('3 Columns  Layout', $layout->getDisplayName());
 
-        // Revert current page to a non-stubbed page
-        $req->setCurrentPage(Page::getByID(1));
+        $req->clearCurrentPage();
     }
 }
