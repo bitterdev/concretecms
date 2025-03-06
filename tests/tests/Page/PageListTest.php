@@ -310,16 +310,17 @@ class PageListTest extends PageTestCase
         $nl = new \Concrete\Core\Page\PageList();
         $nl->includeAliases();
         $nl->ignorePermissions();
-        $nl->sortByName();
+        $nl->getQueryObject()->addOrderBy('cv.cvName', 'asc');
+        $nl->getQueryObject()->addOrderBy('p.cID', 'asc');
         $total = $nl->getPagination()->getTotalResults();
         $results = $nl->getPagination()->setMaxPerPage(10)->getCurrentPageResults();
         $this->assertEquals(18, $total);
         $this->assertCount(10, $results);
-        $this->assertTrue($results[1]->isAlias());
-        $this->assertEquals('Another Fun Page', $results[1]->getCollectionName());
-        $this->assertEquals($results[1]->getCollectionID(), $subject->getCollectionID());
-        $this->assertEquals(20, $results[1]->getCollectionPointerOriginalID());
-        $this->assertEquals(8, $results[1]->getCollectionID());
+        $this->assertTrue($results[2]->isAlias());
+        $this->assertEquals('Another Fun Page', $results[2]->getCollectionName());
+        $this->assertEquals($results[2]->getCollectionID(), $subject->getCollectionID());
+        $this->assertEquals(20, $results[2]->getCollectionPointerOriginalID());
+        $this->assertEquals(8, $results[2]->getCollectionID());
     }
 
     public function testIndexedSearch()
