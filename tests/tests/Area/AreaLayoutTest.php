@@ -88,7 +88,7 @@ class AreaLayoutTest extends ConcreteDatabaseTestCase
     {
         $this->truncateTables();
 
-        $layout = \Concrete\Core\Area\Layout\ThemeGridLayout::add();
+        $layout = ThemeGridLayout::add();
         $layout->addLayoutColumn()->setAreaLayoutColumnSpan(4);
         $column = $layout->addLayoutColumn();
         $column->setAreaLayoutColumnSpan(2);
@@ -96,11 +96,11 @@ class AreaLayoutTest extends ConcreteDatabaseTestCase
         $layout->addLayoutColumn()->setAreaLayoutColumnSpan(6);
 
         $elemental = \Concrete\Core\Page\Theme\Theme::add('elemental');
-        $service = \Core::make('site/type');
+        $service = Core::make('site/type');
         if (!$service->getDefault()) {
             $service->installDefault();
         }
-        $service = \Core::make('site');
+        $service = Core::make('site');
         if (!$service->getDefault()) {
             $service->installDefault();
         }
