@@ -10,6 +10,7 @@ use Concrete\Core\Permission\Category as PermissionCategory;
 use Concrete\Core\Permission\Key\Key as PermissionKey;
 use Concrete\Core\Support\Facade\Application as ApplicationFacade;
 use Concrete\Core\User\UserInfo;
+use Concrete\Core\User\User;
 use Concrete\Core\Http\Request;
 use Concrete\Core\Http\ServerInterface;
 use Concrete\TestHelpers\Page\PageTestCase;
@@ -43,13 +44,24 @@ class DashboardPageTestCase extends PageTestCase
         );
         // Persist the admin login
         $admin = $adminInfo->getUserObject();
-        $admin->persist();
+        $admin->persist(false);
 
         if (!isset(static::$pageUrl)) {
           throw new \Exception("Please set the page URL for the test.");
         }
 
         $login = SinglePage::add(static::$pageUrl);
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+
+        $app = ApplicationFacade::getFacadeApplication();
+        $app->forgetInstance(User::class);
+
+        $session = $this->app->make('session');
+        $session->clear();
     }
 
     public function __construct($name = null, array $data = [], $dataName = '')
