@@ -52,11 +52,6 @@ class ExpressEntriesTest extends DashboardPageTestCase
         $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Key\Settings\TextSettings';
     }
 
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testUnexistingFormSubmitWithoutEntity(): void
     {
         $id = '00000000-0000-0000-0000-000000000000';
