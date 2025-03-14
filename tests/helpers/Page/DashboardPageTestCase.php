@@ -60,7 +60,7 @@ class DashboardPageTestCase extends PageTestCase
         $app = ApplicationFacade::getFacadeApplication();
         $app->forgetInstance(User::class);
 
-        $session = $this->app->make('session');
+        $session = $app->make('session');
         $session->clear();
     }
 
