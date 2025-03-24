@@ -2,6 +2,7 @@
 
 namespace Concrete\Tests\Backup;
 
+use Concrete\Core\Backup\ContentImporter\ValueInspector\ValueInspectorInterface;
 use Concrete\Core\File\Import\FileImporter;
 use Concrete\TestHelpers\File\FileStorageTestCase;
 
@@ -20,7 +21,7 @@ class ContentImporterValueInspectorTest extends FileStorageTestCase
     public function testMake()
     {
         $inspector = app('import/value_inspector/core');
-        $this->assertInstanceOf('\Concrete\Core\Backup\ContentImporter\ValueInspector\ValueInspectorInterface', $inspector);
+        $this->assertInstanceOf(ValueInspectorInterface::class, $inspector);
     }
 
     public function testRegister()
@@ -33,6 +34,8 @@ class ContentImporterValueInspectorTest extends FileStorageTestCase
     public function testMakeCore()
     {
         $inspector = app('import/value_inspector');
+        $inspector2 = app(ValueInspectorInterface::class);
+        $this->assertSame($inspector, $inspector2);
         $this->assertEquals(7, count($inspector->getInspectionRoutines()));
     }
 
