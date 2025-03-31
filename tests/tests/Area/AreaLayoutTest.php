@@ -42,6 +42,12 @@ class AreaLayoutTest extends ConcreteDatabaseTestCase
         $this->assertEquals('<div class="ccm-layout-column-wrapper" id="ccm-layout-column-wrapper-1"></div>', (string) $formatter->getLayoutContainerHtmlObject());
     }
 
+    public function testUnexistingLayoutContainer(): void
+    {
+        $layout = Layout::getByID(1337);
+        $this->assertNull($layout);
+    }
+
     public function testThemeGridAreaLayoutContainer()
     {
         $this->truncateTables();
