@@ -2,12 +2,17 @@
 
 namespace Concrete\Tests\Block;
 
+use Concrete\Core\Application\Application;
 use Concrete\Core\Attribute\Key\Category;
 use Concrete\Core\Attribute\Key\FileKey;
 use Concrete\Core\Attribute\Type as AttributeType;
 use Concrete\Core\Cache\CacheLocal;
+use Concrete\Core\Database\Connection\Connection;
 use Concrete\Core\File\Import\FileImporter;
+use Concrete\Core\Utility\Service\Xml;
 use Concrete\TestHelpers\File\FileStorageTestCase;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Mockery as M;
 use SimpleXMLElement;
 
 class ContentFileTranslateTest extends FileStorageTestCase
@@ -88,6 +93,24 @@ class ContentFileTranslateTest extends FileStorageTestCase
         $this->assertEquals($to, $translated);
 
         $c = app(\Concrete\Block\Content\Controller::class);
+        $btSchema = \DoctrineXml\Parser::fromFile(DIR_BASE_CORE . '/blocks/content/db.xml', new MySqlPlatform());
+        $btTables = $btSchema->getTables();
+        $tableName = reset($btTables)->getName();
+        $mRecordset = M::mock(\Doctrine\DBAL\Result::class);
+        $mRecordset
+            ->shouldReceive('fetchAssociative')->twice()->andReturn(['bID' => 1, 'content' => $from], false)
+        ;
+        $mConn = M::mock(Connection::class);
+        $mConn
+            ->shouldReceive('MetaColumns')->once()->with($tableName)->andReturn($btSchema->getTable($tableName)->getColumns())
+            ->shouldReceive('executeQuery')->once()->andReturn($mRecordset)
+        ;
+        $mApp = M::mock(Application::class);
+        $mApp
+            ->shouldReceive('make')->once()->with(Connection::class)->andReturn($mConn)
+            ->shouldReceive('make')->once()->with(Xml::class)->andReturn(app(Xml::class))
+        ;
+        $c->setApplication($mApp);
         $c->content = $from;
         $sx = new SimpleXMLElement('<test />');
         $c->export($sx);
