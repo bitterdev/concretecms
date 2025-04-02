@@ -145,22 +145,25 @@ class LinkAbstractorTest extends ConcreteDatabaseTestCase
 
             // Create a mock file object and make the mocked entity manager return
             // that.
+            $mockFileVersion = $this->getMockBuilder(\Concrete\Core\Entity\File\Version::class)
+                ->disableOriginalConstructor()
+                ->getMock()
+            ;
+            $mockFileVersion->expects($this->exactly(2))
+                ->method('getPrefix')
+                ->willReturn('123456789012')
+            ;
+            $mockFileVersion->expects($this->exactly(2))
+                ->method('getFilename')
+                ->willReturn('test_file.jpg')
+            ;
             $mockFile = $this->getMockBuilder('Concrete\Core\Entity\File\File')
                 ->disableOriginalConstructor()
                 ->getMock();
-            $mockFile->expects($this->any())
-                ->method('__call')
-                ->will($this->returnCallback(function ($method, $args) {
-                    if ($method === 'getPrefix') {
-                        return '123456789012';
-                    } elseif ($method === 'getFileName' ||
-                        $method === 'getFilename'
-                    ) {
-                        return 'test_file.jpg';
-                    }
-
-                    return null;
-                }));
+            $mockFile->expects($this->exactly(2))
+                ->method('getApprovedVersion')
+                ->willReturn($mockFileVersion)
+            ;
 
             $em->expects($this->exactly(2))
                 ->method('find')
