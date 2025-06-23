@@ -25,8 +25,17 @@ class FileImporterTest extends FileStorageTestCase
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
+        Config::set('concrete.upload.extensions', '*.txt;*.jpg;*.jpeg;*.png');
+    }
 
-        $this->tables = array_merge($this->tables, [
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
+    {
+        return array_merge(parent::getTables(), [
             'Users',
             'PermissionAccessEntityTypes',
             'FileImageThumbnailTypes',
@@ -36,7 +45,6 @@ class FileImporterTest extends FileStorageTestCase
             'Logs',
             'FileVersionLog',
         ]);
-        Config::set('concrete.upload.extensions', '*.txt;*.jpg;*.jpeg;*.png');
     }
 
     /**

@@ -16,15 +16,17 @@ class FileAttributeTest extends AttributeTestCase
 
     protected $indexQuery = 'select * from FileSearchIndexAttributes where fID = 1';
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        $this->tables = array_merge($this->tables, [
-                'FileStorageLocationTypes',
-                'FileVersionLog',
-            ]
-        );
+        return array_merge(parent::getTables(), [
+            'FileStorageLocationTypes',
+            'FileVersionLog',
+        ]);
     }
 
     /**

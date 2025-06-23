@@ -157,7 +157,7 @@ abstract class ConcreteDatabaseTestCase extends TestCase
         $connection = $this->connection();
 
         // Filter out any tables that have already been imported
-        $tables = array_filter($this->getTables(), function ($table) {
+        $tables = array_filter(array_unique($this->getTables()), function ($table) {
             return !isset(static::$existingTables[$table]);
         });
 

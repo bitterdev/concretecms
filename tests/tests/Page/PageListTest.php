@@ -60,12 +60,14 @@ class PageListTest extends PageTestCase
         ],
     ];
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        // Add extra tables
-        $this->tables = array_merge($this->tables, [
+        return array_merge(parent::getTables(), [
             'PermissionAccessList',
             'PageTypeComposerFormLayoutSets',
             'PermissionAccessEntityTypes',

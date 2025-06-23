@@ -64,36 +64,40 @@ class DashboardPageTestCase extends PageTestCase
         $session->clear();
     }
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        // General
-        $this->tables[] = 'Config';
-        // Pages
-        $this->tables[] = 'PageThemeCustomStyles';
-
-        // Users & permissions
-        $this->tables[] = 'UserGroups';
-        $this->tables[] = 'Groups';
-        $this->tables[] = 'TreeTypes';
-        $this->tables[] = 'TreeNodes';
-        $this->tables[] = 'TreeNodePermissionAssignments';
-        $this->tables[] = 'AreaPermissionAssignments';
-        $this->tables[] = 'PermissionAccess';
-        $this->tables[] = 'PermissionAccessEntities';
-        $this->tables[] = 'PermissionAccessEntityGroups';
-        $this->tables[] = 'PermissionAccessList';
-        $this->tables[] = 'PermissionKeyCategories';
-        $this->tables[] = 'PermissionKeys';
-        $this->tables[] = 'TreeNodeTypes';
-        $this->tables[] = 'Trees';
-        $this->tables[] = 'TreeGroupNodes';
-        // Blocks
-        $this->tables[] = 'BlockTypes';
-        $this->tables[] = 'Blocks';
-        // Stacks
-        $this->tables[] = 'Stacks';
+        return array_merge(parent::getTables(), [
+            // General
+            'Config',
+            // Pages
+            'PageThemeCustomStyles',
+            // Users & permissions
+            'UserGroups',
+            'Groups',
+            'TreeTypes',
+            'TreeNodes',
+            'TreeNodePermissionAssignments',
+            'AreaPermissionAssignments',
+            'PermissionAccess',
+            'PermissionAccessEntities',
+            'PermissionAccessEntityGroups',
+            'PermissionAccessList',
+            'PermissionKeyCategories',
+            'PermissionKeys',
+            'TreeNodeTypes',
+            'Trees',
+            'TreeGroupNodes',
+            // Blocks
+            'BlockTypes',
+            'Blocks',
+            // Stacks
+            'Stacks',
+        ]);
     }
 
     /**

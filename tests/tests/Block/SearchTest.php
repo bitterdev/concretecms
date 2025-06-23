@@ -43,21 +43,26 @@ class SearchTest extends BlockTypeTestCase
         AttributeCategory::add('collection');
     }
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        $this->tables[] = 'btSearch';
-        $this->tables[] = 'CollectionVersions';
-        $this->tables[] = 'CollectionSearchIndexAttributes';
-        $this->tables[] = 'Pages';
-        $this->tables[] = 'PageTypes';
-        $this->tables[] = 'PageSearchIndex';
-        $this->tables[] = 'PermissionAccessEntityTypes';
-        $this->tables[] = 'PermissionKeys';
-        $this->tables[] = 'PermissionKeyCategories';
-        $this->tables[] = 'PagePermissionAssignments';
-        $this->tables[] = 'BlockPermissionAssignments';
+        return array_merge(parent::getTables(), [
+            'btSearch',
+            'CollectionVersions',
+            'CollectionSearchIndexAttributes',
+            'Pages',
+            'PageTypes',
+            'PageSearchIndex',
+            'PermissionAccessEntityTypes',
+            'PermissionKeys',
+            'PermissionKeyCategories',
+            'PagePermissionAssignments',
+            'BlockPermissionAssignments',
+        ]);
     }
 
     /**

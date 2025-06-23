@@ -32,24 +32,29 @@ class BlockRenderTest extends PageTestCase
 
     protected $btHandle = 'content';
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        // Basics for the blocks
-        $this->tables[] = 'Blocks';
-        $this->tables[] = 'Config';
-        // Logging in/out the users
-        $this->tables[] = 'AuthenticationTypes';
-        // General for the users
-        // Adding groups
-        $this->tables[] = 'UserGroups';
-        $this->tables[] = 'Trees';
-        $this->tables[] = 'TreeGroupNodes';
-        $this->tables[] = 'TreeTypes';
-        // Adding content blocks
-        $this->tables[] = 'btContentLocal';
-        $this->tables[] = 'SystemContentEditorSnippets';
+        return array_merge(parent::getTables(), [
+            // Basics for the blocks
+            'Blocks',
+            'Config',
+            // Logging in/out the users
+            'AuthenticationTypes',
+            // General for the users
+            // Adding groups
+            'UserGroups',
+            'Trees',
+            'TreeGroupNodes',
+            'TreeTypes',
+            // Adding content blocks
+            'btContentLocal',
+            'SystemContentEditorSnippets',
+        ]);
     }
 
     /**

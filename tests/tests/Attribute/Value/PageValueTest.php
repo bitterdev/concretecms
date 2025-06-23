@@ -7,11 +7,14 @@ use Page;
 
 class PageValueTest extends AttributeValueTestCase
 {
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        $this->tables = array_merge($this->tables, [
+        return array_merge(parent::getTables(), [
             'PageTypes',
             'PageThemes',
             'PermissionAccessEntityTypes',

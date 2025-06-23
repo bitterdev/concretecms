@@ -8,13 +8,18 @@ use Concrete\TestHelpers\Page\PageTestCase;
 
 class BlockStyleTest extends PageTestCase
 {
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        $this->tables = array_merge($this->tables,
-           ['StyleCustomizerInlineStyleSets', 'Blocks', 'AttributeKeyCategories']
-        );
+        return array_merge(parent::getTables(), [
+            'StyleCustomizerInlineStyleSets',
+            'Blocks',
+            'AttributeKeyCategories',
+        ]);
     }
 
     /**

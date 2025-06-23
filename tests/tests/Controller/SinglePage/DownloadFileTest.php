@@ -24,38 +24,40 @@ use RecursiveIteratorIterator;
 
 class DownloadFileTest extends PageTestCase
 {
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        // Files
-        $this->tables[] = 'FileImageThumbnailPaths';
-
-        // Users & permissions
-        $this->tables[] = 'UserGroups';
-        $this->tables[] = 'Groups';
-        $this->tables[] = 'TreeTypes';
-        $this->tables[] = 'TreeNodes';
-        $this->tables[] = 'TreeNodePermissionAssignments';
-        $this->tables[] = 'AreaPermissionAssignments';
-        $this->tables[] = 'FilePermissionAssignments';
-        $this->tables[] = 'PermissionAccess';
-        $this->tables[] = 'PermissionAccessEntities';
-        $this->tables[] = 'PermissionAccessEntityGroups';
-        $this->tables[] = 'PermissionAccessList';
-        $this->tables[] = 'PermissionKeyCategories';
-        $this->tables[] = 'PermissionKeys';
-        $this->tables[] = 'TreeNodeTypes';
-        $this->tables[] = 'Trees';
-        $this->tables[] = 'TreeGroupNodes';
-        $this->tables[] = 'TreeFileFolderNodes';
-        $this->tables[] = 'TreeFileNodes';
-
-        // Blocks
-        $this->tables[] = 'Blocks';
-
-        // Stacks
-        $this->tables[] = 'Stacks';
+        return array_merge(parent::getTables(), [
+            // Files
+            'FileImageThumbnailPaths',
+            // Users & permissions
+            'UserGroups',
+            'Groups',
+            'TreeTypes',
+            'TreeNodes',
+            'TreeNodePermissionAssignments',
+            'AreaPermissionAssignments',
+            'FilePermissionAssignments',
+            'PermissionAccess',
+            'PermissionAccessEntities',
+            'PermissionAccessEntityGroups',
+            'PermissionAccessList',
+            'PermissionKeyCategories',
+            'PermissionKeys',
+            'TreeNodeTypes',
+            'Trees',
+            'TreeGroupNodes',
+            'TreeFileFolderNodes',
+            'TreeFileNodes',
+            // Blocks
+            'Blocks',
+            // Stacks
+            'Stacks',
+        ]);
     }
 
     /**

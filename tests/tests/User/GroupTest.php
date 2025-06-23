@@ -577,12 +577,10 @@ class GroupTest extends UserTestCase
      */
     protected function getTables()
     {
-        $this->tables = array_values(array_unique(array_merge($this->tables, [
+        return array_merge(parent::getTables(), [
             'GroupSelectedRoles',
             'TreeGroupFolderNodes',
             'TreeGroupFolderNodeSelectedGroupTypes',
-        ])));
-
-        return parent::getTables();
+        ]);
     }
 }

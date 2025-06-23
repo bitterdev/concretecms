@@ -45,18 +45,16 @@ class ClonerTest extends PageTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
      */
     protected function getTables()
     {
-        foreach(['Blocks', 'CollectionVersionBlocksOutputCache'] as $t) {
-            if (!in_array($t, $this->tables, true)) {
-                $this->tables[] = $t;
-            }
-        }
-
-        return parent::getTables();
+        return array_merge(parent::getTables(), [
+            'Blocks',
+            'CollectionVersionBlocksOutputCache',
+        ]);
     }
 
     /**
