@@ -154,28 +154,36 @@ abstract class ConcreteDatabaseTestCase extends TestCase
      */
     protected function importTables()
     {
+        $tables = [];
+        foreach ($this->getTables() as $table) {
+            if (!isset(static::$existingTables[$table]) || !in_array($table, $tables, true)) {
+                $tables[] = $table;
+            }
+        }
+        if ($tables === []) {
+            return;
+        }
         $connection = $this->connection();
-
-        // Filter out any tables that have already been imported
-        $tables = array_filter(array_unique($this->getTables()), function ($table) {
-            return !isset(static::$existingTables[$table]);
-        });
-
-        if ($tables) {
-            $xml = $this->extractTableData($tables);
-            // Try to extract the tables
-            if (!$xml) {
-                throw new RuntimeException('Invalid tables: ' . json_encode($tables));
+        $importedTables = [];
+        $xml = $this->extractTableData($tables, $importedTables);
+        $this->importTableXML($xml, $connection);
+        foreach ($importedTables as $table) {
+            static::$existingTables[$table] = true;
+        }
+        foreach ([
+            'btCoreStackDisplay' => 'core_scrapbook_display'
+        ] as $blockTypeTable => $blockTypeHandle) {
+            if (!in_array($blockTypeTable, $tables, true)) {
+                continue;
             }
-
-            // Import any extracted tables
+            $xml = simplexml_load_file(DIR_BASE_CORE . '/blocks/' . $blockTypeHandle .'/db.xml');
             $this->importTableXML($xml, $connection);
-
-            // Check for special `BlockType` case
-            if (in_array('BlockTypes', $tables, false)) {
-                $xml = simplexml_load_file(DIR_BASE_CORE . '/blocks/core_scrapbook_display/db.xml');
-                $this->importTableXML($xml, $connection);
-            }
+            static::$existingTables[$blockTypeTable] = true;
+            $importedTables[] = $blockTypeTable;
+        }
+        $invalidTables = array_diff($tables, $importedTables);
+        if ($invalidTables !== []) {
+            throw new RuntimeException("Unrecognized tables to be created:\n- " . implode("\n- ", $invalidTables));
         }
     }
 
@@ -211,50 +219,31 @@ abstract class ConcreteDatabaseTestCase extends TestCase
     /**
      * Extract the table data from the db.xml.
      *
-     * @param array $tables
-     *
-     * @return array|null
+     * @param string[] $tables the wanted table names
+     * @param string[] $importedTables imported tables will be appended to this argument
      */
-    protected function extractTableData(array $tables)
+    protected function extractTableData(array $tables, array &$importedTables): SimpleXMLElement
     {
-        // If there are no tables, there's no reason to scan the XML
-        if (!count($tables)) {
+        if ($tables === []) {
             return null;
         }
-
-        // Initialize an xml document
         $partial = new SimpleXMLElement('<schema xmlns="http://www.concrete5.org/doctrine-xml/0.5" />');
-
-        // Open the db.xml file
         $xml1 = simplexml_load_file(DIR_BASE_CORE . '/config/db.xml');
-        $importedTables = [];
-
-        // Loop through tables that exist in the document
         foreach ($xml1->table as $table) {
             $name = (string) $table['name'];
-
-            // If this table is being requested
-            if (in_array($name, $tables, false)) {
-                $this->appendXML($partial, $table);
-
-                // Remove the table from our list of tables
-                $tables = array_filter($tables, function ($name) use ($table) {
-                    return $name !== $table;
-                });
-
-                // Track that we actually have tables to import
-                $importedTables[] = $name;
-
-                static::$existingTables[$name] = true;
+            $index = array_search($name, $tables, true);
+            if ($index === false) {
+                continue;
             }
-
-            if (!$tables) {
+            $this->appendXML($partial, $table);
+            $importedTables[] = $name;
+            unset($tables[$index]);
+            if ($tables === []) {
                 break;
             }
         }
 
-        // Return the partial only if there are tables to import
-        return $importedTables ? $partial : null;
+        return $partial;
     }
 
     /**
