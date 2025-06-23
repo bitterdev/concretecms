@@ -21,7 +21,6 @@ abstract class UserTestCase extends ConcreteDatabaseTestCase
         'Concrete\Core\Entity\User\UserSignup',
         'Concrete\Core\Entity\Attribute\Category',
         'Concrete\Core\Entity\Attribute\Key\Key',
-        'Concrete\Core\Entity\Attribute\Key\UserValue',
         'Concrete\Core\Entity\Attribute\Key\UserKey',
     ];
 

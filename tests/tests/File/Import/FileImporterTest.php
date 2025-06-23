@@ -47,13 +47,11 @@ class FileImporterTest extends FileStorageTestCase
     protected function getEntityClassNames(): array
     {
         return array_merge(parent::getEntityClassNames(), [
-            'Concrete\Core\Entity\Attribute\Key\Settings\NumberSettings',
             'Concrete\Core\Entity\Attribute\Key\Settings\Settings',
             'Concrete\Core\Entity\Attribute\Key\Settings\EmptySettings',
             'Concrete\Core\Entity\Attribute\Key\FileKey',
             'Concrete\Core\Entity\Attribute\Value\FileValue',
             'Concrete\Core\Entity\Attribute\Key\Key',
-            'Concrete\Core\Entity\Attribute\Value\Value',
             'Concrete\Core\Entity\Attribute\Value\Value\NumberValue',
             'Concrete\Core\Entity\Attribute\Value\Value\Value',
             'Concrete\Core\Entity\Attribute\Type',

@@ -110,7 +110,6 @@ class DashboardPageTestCase extends PageTestCase
             'Concrete\Core\Entity\Attribute\Category',
             'Concrete\Core\Entity\Attribute\Type',
             'Concrete\Core\Entity\Attribute\Key\Key',
-            'Concrete\Core\Entity\Attribute\Key\UserValue',
             'Concrete\Core\Entity\Attribute\Key\UserKey',
             // Messenger
             'Concrete\Core\Entity\Command\Process',

@@ -70,7 +70,6 @@ class LoginTest extends PageTestCase
             'Concrete\Core\Entity\User\UserSignup',
             'Concrete\Core\Entity\Attribute\Category',
             'Concrete\Core\Entity\Attribute\Key\Key',
-            'Concrete\Core\Entity\Attribute\Key\UserValue',
             'Concrete\Core\Entity\Attribute\Key\UserKey',
             // Permissions
             'Concrete\Core\Entity\Permission\IpAccessControlCategory',

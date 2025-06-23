@@ -25,7 +25,6 @@ abstract class AttributeValueTestCase extends ConcreteDatabaseTestCase
         'Concrete\Core\Entity\Attribute\Type',
         'Concrete\Core\Entity\Attribute\Key\Key',
         'Concrete\Core\Entity\Attribute\Key\PageKey',
-        'Concrete\Core\Entity\Attribute\Value\Value',
         'Concrete\Core\Entity\Attribute\Value\Value\Value',
         'Concrete\Core\Entity\Attribute\Value\PageValue',
         'Concrete\Core\Entity\Page\PagePath',

@@ -70,7 +70,6 @@ class SearchTest extends BlockTypeTestCase
         return array_merge(parent::getEntityClassNames(), [
             'Concrete\Core\Entity\Attribute\Category',
             'Concrete\Core\Entity\Attribute\Key\Key',
-            'Concrete\Core\Entity\Attribute\Value\Value',
             'Concrete\Core\Entity\Attribute\Key\PageKey',
             'Concrete\Core\Entity\Attribute\Value\PageValue',
         ]);

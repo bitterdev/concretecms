@@ -37,7 +37,6 @@ class FileAttributeTest extends AttributeTestCase
         return array_merge(parent::getEntityClassNames(), [
             'Concrete\Core\Entity\File\Version',
             'Concrete\Core\Entity\File\File',
-            'Concrete\Core\Entity\Attribute\Key\Settings\NumberSettings',
             'Concrete\Core\Entity\Attribute\Key\FileKey',
             'Concrete\Core\Entity\Attribute\Key\Key',
             'Concrete\Core\Entity\Attribute\Value\Value\NumberValue',
