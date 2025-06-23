@@ -376,6 +376,9 @@ abstract class ConcreteDatabaseTestCase extends TestCase
                 }
             }
         }
+        if ($install !== []) {
+            throw new RuntimeException("Unrecognized entities to be installed:\n- " . implode("\n- ", $install));
+        }
 
         return $metadatas;
     }
