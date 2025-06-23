@@ -37,7 +37,6 @@ class ContentTest extends BlockTypeTestCase
     {
         return array_merge(parent::getTables(), [
             'SystemContentEditorSnippets',
-            'btContentLocal',
         ]);
     }
 }

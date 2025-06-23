@@ -16,9 +16,7 @@ class BlockStyleTest extends PageTestCase
     protected function getTables()
     {
         return array_merge(parent::getTables(), [
-            'StyleCustomizerInlineStyleSets',
             'Blocks',
-            'AttributeKeyCategories',
         ]);
     }
 

@@ -93,7 +93,7 @@ class DashboardPageTestCase extends PageTestCase
             'Trees',
             'TreeGroupNodes',
             // Blocks
-            'BlockTypes',
+            'btCoreStackDisplay',
             'Blocks',
             // Stacks
             'Stacks',

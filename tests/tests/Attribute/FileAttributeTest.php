@@ -24,7 +24,6 @@ class FileAttributeTest extends AttributeTestCase
     protected function getTables()
     {
         return array_merge(parent::getTables(), [
-            'FileStorageLocationTypes',
             'FileVersionLog',
         ]);
     }

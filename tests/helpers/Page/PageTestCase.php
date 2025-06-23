@@ -41,7 +41,6 @@ abstract class PageTestCase extends ConcreteDatabaseTestCase
         'ConfigStore',
         'Logs',
         'PageTypePublishTargetTypes',
-        'AttributeKeyCategories',
         'PageTypeComposerOutputBlocks',
         'PageTypeComposerFormLayoutSets',
         'BlockPermissionAssignments',

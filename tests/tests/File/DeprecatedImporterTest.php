@@ -37,9 +37,7 @@ class DeprecatedImporterTest extends FileStorageTestCase
     protected function getTables()
     {
         return array_merge(parent::getTables(), [
-            'Users',
             'PermissionAccessEntityTypes',
-            'FileImageThumbnailTypes',
             'FileImageThumbnailPaths',
             'FilePermissionAssignments',
             'ConfigStore',

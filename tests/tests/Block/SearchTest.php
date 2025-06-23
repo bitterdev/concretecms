@@ -51,9 +51,7 @@ class SearchTest extends BlockTypeTestCase
     protected function getTables()
     {
         return array_merge(parent::getTables(), [
-            'btSearch',
             'CollectionVersions',
-            'CollectionSearchIndexAttributes',
             'Pages',
             'PageTypes',
             'PageSearchIndex',

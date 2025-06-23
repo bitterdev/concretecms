@@ -55,7 +55,7 @@ class LoginTest extends PageTestCase
             // Logging in/out the users
             'AuthenticationTypes',
             // Blocks
-            'BlockTypes',
+            'btCoreStackDisplay',
             'Blocks',
             // Stacks
             'Stacks',

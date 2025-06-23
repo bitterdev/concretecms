@@ -11,9 +11,18 @@ use Request;
 
 class AreaLayoutTest extends ConcreteDatabaseTestCase
 {
-    protected $tables = ['AreaLayoutPresets', 'AreaLayouts', 'AreaLayoutColumns',
-        'AreaLayoutCustomColumns', 'AreaLayoutThemeGridColumns', 'PageThemes', 'Pages', 'Collections',
-        'CollectionVersions', 'SiteTrees'];
+    protected $tables = [
+        'AreaLayoutPresets',
+        'AreaLayouts',
+        'AreaLayoutColumns',
+        'AreaLayoutCustomColumns',
+        'AreaLayoutThemeGridColumns',
+        'PageThemes',
+        'Pages',
+        'Collections',
+        'CollectionVersions',
+    ];
+
     protected $fixtures = [];
 
     protected $entityClassNames = [

@@ -27,8 +27,6 @@ class FileListTest extends FileStorageTestCase
     {
         return array_merge(parent::getTables(), [
             'PermissionAccessEntityTypes',
-            'FileAttributeValues',
-            'FileImageThumbnailTypes',
             'ConfigStore',
             'FileSets',
             'FileVersionLog',

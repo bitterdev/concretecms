@@ -52,7 +52,6 @@ class BlockRenderTest extends PageTestCase
             'TreeGroupNodes',
             'TreeTypes',
             // Adding content blocks
-            'btContentLocal',
             'SystemContentEditorSnippets',
         ]);
     }

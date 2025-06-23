@@ -31,11 +31,9 @@ class CollectionAttributeTest extends AttributeTestCase
     {
         return array_merge(parent::getTables(), [
             'Collections',
-            'CollectionAttributeValues',
             'Pages',
             'PageSearchIndex',
             'PageTypes',
-            'CollectionSearchIndexAttributes',
             'CollectionVersions',
             'CollectionVersionBlocks',
         ]);

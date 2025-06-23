@@ -27,15 +27,10 @@ class ContentFileTranslateTest extends FileStorageTestCase
     protected function getTables()
     {
         return array_merge(parent::getTables(), [
-            'Users',
             'PermissionAccessEntityTypes',
-            'FileImageThumbnailTypes',
             'FilePermissionAssignments',
             'ConfigStore',
-            'AttributeKeys',
             'SystemContentEditorSnippets',
-            'AttributeValues',
-            'atNumber',
             'FileVersionLog',
         ]);
     }

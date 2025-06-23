@@ -43,11 +43,9 @@ abstract class AttributeTypeTestCase extends ConcreteDatabaseTestCase
      */
     protected $tables = [
         'Collections',
-        'CollectionAttributeValues',
         'Pages',
         'PageSearchIndex',
         'PageTypes',
-        'CollectionSearchIndexAttributes',
         'CollectionVersions',
     ];
 
