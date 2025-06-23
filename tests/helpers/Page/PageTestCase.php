@@ -47,7 +47,7 @@ abstract class PageTestCase extends ConcreteDatabaseTestCase
         'BlockPermissionAssignments',
     ]; // so brutal
 
-    protected $metadatas = [
+    protected $entityClassNames = [
         'Concrete\Core\Entity\Board',
         'Concrete\Core\Entity\Board\Instance',
         'Concrete\Core\Entity\Site\Type',

@@ -58,12 +58,22 @@ class SearchTest extends BlockTypeTestCase
         $this->tables[] = 'PermissionKeyCategories';
         $this->tables[] = 'PagePermissionAssignments';
         $this->tables[] = 'BlockPermissionAssignments';
+    }
 
-        $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Category';
-        $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Key\Key';
-        $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Value\Value';
-        $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Key\PageKey';
-        $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Value\PageValue';
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
+     */
+    protected function getEntityClassNames(): array
+    {
+        return array_merge(parent::getEntityClassNames(), [
+            'Concrete\Core\Entity\Attribute\Category',
+            'Concrete\Core\Entity\Attribute\Key\Key',
+            'Concrete\Core\Entity\Attribute\Value\Value',
+            'Concrete\Core\Entity\Attribute\Key\PageKey',
+            'Concrete\Core\Entity\Attribute\Value\PageValue',
+        ]);
     }
 
     public function setUp(): void

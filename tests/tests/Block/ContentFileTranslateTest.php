@@ -35,7 +35,16 @@ class ContentFileTranslateTest extends FileStorageTestCase
             'atNumber',
             'FileVersionLog',
         ]);
-        $this->metadatas = array_merge($this->metadatas, [
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
+     */
+    protected function getEntityClassNames(): array
+    {
+        return array_merge(parent::getEntityClassNames(), [
             'Concrete\Core\Entity\File\File',
             'Concrete\Core\Entity\File\Version',
             'Concrete\Core\Entity\Attribute\Key\Settings\EmptySettings',
@@ -89,7 +98,6 @@ class ContentFileTranslateTest extends FileStorageTestCase
 
         $to = '<p>This is really nice.</p><img src="' . $path . '" alt="Happy Cat" width="48" height="20">';
 
-        
         $this->assertEquals($to, $translated);
 
         $c = app(\Concrete\Block\Content\Controller::class);

@@ -25,7 +25,7 @@ abstract class BlockTypeTestCase extends ConcreteDatabaseTestCase
         'SiteTrees',
     ];
 
-    protected $metadatas = [
+    protected $entityClassNames = [
         'Concrete\Core\Entity\Package',
         'Concrete\Core\Entity\Page\PagePath',
         'Concrete\Core\Entity\Block\BlockType\BlockType',

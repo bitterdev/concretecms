@@ -16,7 +16,7 @@ class UpdateTest extends ConcreteDatabaseTestCase
     protected $fixtures = [];
     protected $tables = ['Blocks', 'CollectionVersionBlocks', 'Logs', 'SystemDatabaseMigrations', 'Widgets'];
 
-    protected $metadatas = [
+    protected $entityClassNames = [
         BlockType::class,
         File::class,
     ];

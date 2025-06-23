@@ -15,13 +15,20 @@ class BlockStyleTest extends PageTestCase
         $this->tables = array_merge($this->tables,
            ['StyleCustomizerInlineStyleSets', 'Blocks', 'AttributeKeyCategories']
         );
-        $this->metadatas = array_merge($this->metadatas,
-            [
-                'Concrete\Core\Entity\Page\Template',
-                'Concrete\Core\Entity\StyleCustomizer\Inline\StyleSet',
-                'Concrete\Core\Entity\Block\BlockType\BlockType',
-            ]
-        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
+     */
+    protected function getEntityClassNames(): array
+    {
+        return array_merge(parent::getEntityClassNames(), [
+            'Concrete\Core\Entity\Page\Template',
+            'Concrete\Core\Entity\StyleCustomizer\Inline\StyleSet',
+            'Concrete\Core\Entity\Block\BlockType\BlockType',
+        ]);
     }
 
     public function testPageStyles()

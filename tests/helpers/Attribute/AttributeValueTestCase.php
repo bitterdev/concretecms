@@ -15,7 +15,7 @@ use Page;
 abstract class AttributeValueTestCase extends ConcreteDatabaseTestCase
 {
     protected $fixtures = [];
-    protected $metadatas = [
+    protected $entityClassNames = [
         'Concrete\Core\Entity\Site\Site',
         'Concrete\Core\Entity\Site\Type',
         'Concrete\Core\Entity\Site\Locale',

@@ -13,9 +13,9 @@ abstract class AttributeTypeTestCase extends ConcreteDatabaseTestCase
     /**
      * {@inheritdoc}
      *
-     * @see ConcreteDatabaseTestCase::$metadatas
+     * @see ConcreteDatabaseTestCase::$entityClassNames
      */
-    protected $metadatas = [
+    protected $entityClassNames = [
         'Concrete\Core\Entity\Site\Type',
         'Concrete\Core\Entity\Site\Site',
         'Concrete\Core\Entity\Site\Locale',

@@ -64,7 +64,7 @@ abstract class ConcreteDatabaseTestCase extends TestCase
      *
      * @var string[]
      */
-    protected $metadatas = [];
+    protected $entityClassNames = [];
 
     /**
      * Set up before any tests run.
@@ -316,8 +316,16 @@ abstract class ConcreteDatabaseTestCase extends TestCase
                 }
             }
         }
+    }
 
-
+    /**
+     * Get the entities to import.
+     *
+     * @return string
+     */
+    protected function getEntityClassNames(): array
+    {
+        return $this->entityClassNames;
     }
 
     /**
@@ -335,35 +343,35 @@ abstract class ConcreteDatabaseTestCase extends TestCase
     /**
      * Gets the metadatas to import.
      *
-     * @return array
+     * @return \Doctrine\Persistence\Mapping\ClassMetadata[]
      */
     protected function getMetadatas()
     {
+        $install = array_values(
+            array_unique(
+                array_map(
+                    static function (string $entityClassName): string {
+                        return ltrim($entityClassName, '\\');
+                    },
+                    $this->getEntityClassNames()
+                )
+            )
+        );
         $metadatas = [];
-        $install = $this->metadatas;
-
-        // If there are metadatas to import
-        if ($this->metadatas && is_array($this->metadatas)) {
-            /** @var EntityManagerInterface $manager */
-            $manager = Core::make(EntityManagerInterface::class);
+        if ($install !== []) {
+            $manager = app(EntityManagerInterface::class);
             $factory = $manager->getMetadataFactory();
-
-            // Loop through all metadata
             foreach ($factory->getAllMetadata() as $meta) {
-                if (!isset(self::$existingEntites[$meta->getName()]) && in_array($meta->getName(), $install, false)) {
-                    $metadatas[] = $meta;
-
-                    // Remove this from the list of entities to install
-                    $install = array_filter($install, function ($name) use ($meta) {
-                        return $name !== $meta->getName();
-                    });
-
-                    // Track that we've created this metadata
-                    self::$existingEntites[$meta->getName()] = true;
+                $index = array_search($meta->getName(), $install, true);
+                if ($index === false) {
+                    continue;
                 }
-
-                // If no more entities to install, lets break
-                if (!$install) {
+                unset($install[$index]);
+                if (!isset(self::$existingEntites[$meta->getName()])) {
+                    self::$existingEntites[$meta->getName()] = true;
+                    $metadatas[] = $meta;
+                }
+                if ($install === []) {
                     break;
                 }
             }

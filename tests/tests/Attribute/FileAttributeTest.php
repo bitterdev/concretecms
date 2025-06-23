@@ -25,7 +25,16 @@ class FileAttributeTest extends AttributeTestCase
                 'FileVersionLog',
             ]
         );
-        $this->metadatas = array_merge($this->metadatas, [
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
+     */
+    protected function getEntityClassNames(): array
+    {
+        return array_merge(parent::getEntityClassNames(), [
             'Concrete\Core\Entity\File\Version',
             'Concrete\Core\Entity\File\File',
             'Concrete\Core\Entity\Attribute\Key\Settings\NumberSettings',

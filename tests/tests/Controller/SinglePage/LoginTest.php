@@ -55,19 +55,29 @@ class LoginTest extends PageTestCase
         $this->tables[] = 'Blocks';
         // Stacks
         $this->tables[] = 'Stacks';
+    }
 
-        // Users
-        $this->metadatas[] = 'Concrete\Core\Entity\User\User';
-        $this->metadatas[] = 'Concrete\Core\Entity\User\UserSignup';
-        $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Category';
-        $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Key\Key';
-        $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Key\UserValue';
-        $this->metadatas[] = 'Concrete\Core\Entity\Attribute\Key\UserKey';
-        // Permissions
-        $this->metadatas[] = 'Concrete\Core\Entity\Permission\IpAccessControlCategory';
-        $this->metadatas[] = 'Concrete\Core\Entity\Permission\IpAccessControlRange';
-        // Blocks
-        $this->metadatas[] = 'Concrete\Core\Entity\Block\BlockType\BlockType';
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
+     */
+    protected function getEntityClassNames(): array
+    {
+        return array_merge(parent::getEntityClassNames(), [
+            // Users
+            'Concrete\Core\Entity\User\User',
+            'Concrete\Core\Entity\User\UserSignup',
+            'Concrete\Core\Entity\Attribute\Category',
+            'Concrete\Core\Entity\Attribute\Key\Key',
+            'Concrete\Core\Entity\Attribute\Key\UserValue',
+            'Concrete\Core\Entity\Attribute\Key\UserKey',
+            // Permissions
+            'Concrete\Core\Entity\Permission\IpAccessControlCategory',
+            'Concrete\Core\Entity\Permission\IpAccessControlRange',
+            // Blocks
+            'Concrete\Core\Entity\Block\BlockType\BlockType',
+        ]);
     }
 
     public static function setUpBeforeClass():void

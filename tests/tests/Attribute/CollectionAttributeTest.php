@@ -37,7 +37,16 @@ class CollectionAttributeTest extends AttributeTestCase
             'CollectionVersionBlocks',
             ]
         );
-        $this->metadatas = array_merge($this->metadatas, [
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
+     */
+    protected function getEntityClassNames(): array
+    {
+        return array_merge(parent::getEntityClassNames(), [
             'Concrete\Core\Entity\Page\PagePath',
             'Concrete\Core\Entity\Page\Template',
         ]);

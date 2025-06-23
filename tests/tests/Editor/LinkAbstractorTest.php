@@ -13,7 +13,7 @@ use Concrete\TestHelpers\Database\ConcreteDatabaseTestCase;
 class LinkAbstractorTest extends ConcreteDatabaseTestCase
 {
 
-    protected $metadatas = [
+    protected $entityClassNames = [
         'Concrete\Core\Entity\File\File',
     ];
 

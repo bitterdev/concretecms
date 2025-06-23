@@ -16,7 +16,7 @@ abstract class UserTestCase extends ConcreteDatabaseTestCase
         'TreeGroupNodes',
     ]; // so brutal
 
-    protected $metadatas = [
+    protected $entityClassNames = [
         'Concrete\Core\Entity\User\User',
         'Concrete\Core\Entity\User\UserSignup',
         'Concrete\Core\Entity\Attribute\Category',

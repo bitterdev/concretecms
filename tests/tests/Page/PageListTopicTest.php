@@ -26,7 +26,16 @@ class PageListTopicTest extends PageTestCase
             'Groups',
             'TreeNodePermissionAssignments'
         ]);
-        $this->metadatas = array_merge($this->metadatas, [
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
+     */
+    protected function getEntityClassNames(): array
+    {
+        return array_merge(parent::getEntityClassNames(), [
             'Concrete\Core\Entity\Attribute\Type',
             'Concrete\Core\Entity\Attribute\Category',
             'Concrete\Core\Entity\Attribute\Key\Settings\Settings',

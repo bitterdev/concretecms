@@ -16,7 +16,7 @@ class AreaLayoutTest extends ConcreteDatabaseTestCase
         'CollectionVersions', 'SiteTrees'];
     protected $fixtures = [];
 
-    protected $metadatas = [
+    protected $entityClassNames = [
         'Concrete\Core\Entity\Site\Locale',
         'Concrete\Core\Entity\Site\Site',
         'Concrete\Core\Entity\Site\Type',
