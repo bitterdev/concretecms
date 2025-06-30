@@ -19,33 +19,38 @@ class ContentFileTranslateTest extends FileStorageTestCase
 {
     protected $fixtures = [];
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        $this->tables = array_merge($this->tables, [
-            'Users',
+        return array_merge(parent::getTables(), [
             'PermissionAccessEntityTypes',
-            'FileImageThumbnailTypes',
             'FilePermissionAssignments',
             'ConfigStore',
-            'AttributeKeys',
             'SystemContentEditorSnippets',
-            'AttributeValues',
-            'atNumber',
             'FileVersionLog',
         ]);
-        $this->metadatas = array_merge($this->metadatas, [
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
+     */
+    protected function getEntityClassNames(): array
+    {
+        return array_merge(parent::getEntityClassNames(), [
             'Concrete\Core\Entity\File\File',
             'Concrete\Core\Entity\File\Version',
             'Concrete\Core\Entity\Attribute\Key\Settings\EmptySettings',
             'Concrete\Core\Entity\Attribute\Key\FileKey',
             'Concrete\Core\Entity\Attribute\Value\FileValue',
             'Concrete\Core\Entity\Attribute\Key\Key',
-            'Concrete\Core\Entity\Attribute\Value\Value',
             'Concrete\Core\Entity\Attribute\Value\Value\Value',
             'Concrete\Core\Entity\Attribute\Value\Value\NumberValue',
-            'Concrete\Core\Entity\Attribute\Key\Settings\NumberSettings',
             'Concrete\Core\Entity\Attribute\Key\Settings\EmptySettings',
             'Concrete\Core\Entity\Attribute\Key\Settings\Settings',
             'Concrete\Core\Entity\Attribute\Type',
@@ -89,7 +94,6 @@ class ContentFileTranslateTest extends FileStorageTestCase
 
         $to = '<p>This is really nice.</p><img src="' . $path . '" alt="Happy Cat" width="48" height="20">';
 
-        
         $this->assertEquals($to, $translated);
 
         $c = app(\Concrete\Block\Content\Controller::class);

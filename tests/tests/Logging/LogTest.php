@@ -30,7 +30,7 @@ class LogTest extends ConcreteDatabaseTestCase
 {
     protected $fixtures = [];
     protected $tables = ['Logs', 'Pages', 'Collections'];
-    protected $metadatas = [User\User::class, User\UserSignup::class, PagePath::class];
+    protected $entityClassNames = [User\User::class, User\UserSignup::class, PagePath::class];
     protected $app;
 
     /**

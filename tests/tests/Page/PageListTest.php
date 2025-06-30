@@ -60,19 +60,28 @@ class PageListTest extends PageTestCase
         ],
     ];
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getTables()
+     */
+    protected function getTables()
     {
-        parent::__construct($name, $data, $dataName);
-
-        // Add extra tables
-        $this->tables = array_merge($this->tables, [
+        return array_merge(parent::getTables(), [
             'PermissionAccessList',
             'PageTypeComposerFormLayoutSets',
             'PermissionAccessEntityTypes',
         ]);
+    }
 
-        // Add extra metadata
-        $this->metadatas = array_merge($this->metadatas, [
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
+     */
+    protected function getEntityClassNames(): array
+    {
+        return array_merge(parent::getEntityClassNames(), [
             \Concrete\Core\Entity\Attribute\Type::class,
             \Concrete\Core\Entity\Attribute\Category::class,
             \Concrete\Core\Entity\Page\Feed::class,

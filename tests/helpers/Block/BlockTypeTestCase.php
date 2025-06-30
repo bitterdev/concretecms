@@ -17,16 +17,15 @@ abstract class BlockTypeTestCase extends ConcreteDatabaseTestCase
     protected $fixtures = [];
 
     protected $tables = [
-        'BlockTypes',
+        'btCoreStackDisplay',
         'Blocks',
         'Pages',
         'CollectionVersionBlocks',
         'Collections',
         'Config',
-        'SiteTrees',
     ];
 
-    protected $metadatas = [
+    protected $entityClassNames = [
         'Concrete\Core\Entity\Package',
         'Concrete\Core\Entity\Page\PagePath',
         'Concrete\Core\Entity\Block\BlockType\BlockType',
