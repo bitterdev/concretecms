@@ -3,6 +3,8 @@
  */
 let mix = require('laravel-mix');
 const path = require('path');
+const fs = require('fs');
+
 mix.override((config) => {
     delete config.watchOptions;
 });
@@ -378,6 +380,7 @@ mix
             ]
         }
     })
+
 // The CMS entry point
 mix
     .sass('assets/cms.scss', 'css/cms.css', {
@@ -408,8 +411,42 @@ mix
             ]
         }
     })
+    .sass('../concrete/themes/atomik/css/presets/coastal-breeze/main.scss', 'themes/atomik/css/skins/coastal-breeze.css', {
+        sassOptions: {
+            includePaths: [
+                path.resolve(__dirname, './node_modules/')
+            ]
+        }
+    })
+    .sass('../concrete/themes/atomik/css/presets/golden-meadow/main.scss', 'themes/atomik/css/skins/golden-meadow.css', {
+        sassOptions: {
+            includePaths: [
+                path.resolve(__dirname, './node_modules/')
+            ]
+        }
+    })
+    .sass('../concrete/themes/atomik/css/presets/misty-sage/main.scss', 'themes/atomik/css/skins/misty-sage.css', {
+        sassOptions: {
+            includePaths: [
+                path.resolve(__dirname, './node_modules/')
+            ]
+        }
+    })
+    .sass('../concrete/themes/atomik/css/presets/amber-twilight/main.scss', 'themes/atomik/css/skins/amber-twilight.css', {
+        sassOptions: {
+            includePaths: [
+                path.resolve(__dirname, './node_modules/')
+            ]
+        }
+    })
+    .sass('../concrete/themes/atomik/css/presets/midnight-velvet/main.scss', 'themes/atomik/css/skins/midnight-velvet.css', {
+        sassOptions: {
+            includePaths: [
+                path.resolve(__dirname, './node_modules/')
+            ]
+        }
+    })
     .js('assets/themes/atomik/js/main.js', 'themes/atomik').vue()
-
 
 // Dashboard Theme
 mix
@@ -424,7 +461,6 @@ mix
 
 // Core Themes
 // Concrete Theme
-
 mix
     .sass('assets/themes/concrete/scss/main.scss', 'themes/concrete', {
         sassOptions: {
@@ -440,6 +476,38 @@ mix.copy('node_modules/@concretecms/bedrock/assets/icons/sprites.svg', '../concr
 
 // Copy jquery ui icons into our repository
 mix.copy('node_modules/jquery-ui/themes/base/images/ui-*', '../concrete/images/');
+
+// Fix line endings
+mix.then((stats) => {
+    if (!stats?.compilation?.assets) {
+        return;
+    }
+    const UTF8_BOM = new Uint8Array([0xEF, 0xBB, 0xBF]);
+    const outputPath = stats.compilation.compiler.outputPath.replace(/[\/\\]$/, '') + path.sep;
+    for (const relativePath in stats.compilation.assets) {
+        if (!/\.(js|css|md|html|txt|php|ts)$/i.test(relativePath)) {
+            if (!/[\/\\](license|readme)$/i.test(relativePath)) {
+                continue;
+            }
+        }
+        const absolutePath = outputPath + relativePath.replace(/^[\/\\]/, '');
+        let fileContents = fs.readFileSync(absolutePath);
+        let changed = false;
+        if (fileContents.length >= UTF8_BOM.length && fileContents.compare(UTF8_BOM, 0, UTF8_BOM.length, 0, UTF8_BOM.length) === 0) {
+            fileContents = fileContents.subarray(UTF8_BOM.length);
+            changed = true;
+        }
+        fileContents = fileContents.toString('utf8')
+        if (fileContents.includes('\r')) {
+            fileContents = fileContents.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+            changed = true;
+        }
+        if (!changed) {
+            continue;
+        }
+        fs.writeFileSync(absolutePath, fileContents);
+    }
+});
 
 // Turn off notifications
 mix

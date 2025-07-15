@@ -69,7 +69,7 @@ class Controller extends BlockController implements FileTrackableInterface, Uses
      * @param \Concrete\Core\Block\BlockType\BlockType|null $obj
      * @param \Concrete\Core\Statistics\UsageTracker\AggregateTracker|null $tracker
      */
-    public function __construct($obj = null, AggregateTracker $tracker = null)
+    public function __construct($obj = null, ?AggregateTracker $tracker = null)
     {
         parent::__construct($obj);
         $this->tracker = $tracker;
@@ -259,4 +259,35 @@ class Controller extends BlockController implements FileTrackableInterface, Uses
         }, $this->getEntries());
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Block\BlockController::export()
+     */
+    public function export(\SimpleXMLElement $blockNode)
+    {
+        parent::export($blockNode);
+        $nodesToRemove = $blockNode->xpath('./data[@table="btImageSliderEntries"]/record/id');
+        if ($nodesToRemove) {
+            foreach ($nodesToRemove as $nodeToRemove) {
+                unset($nodeToRemove[0]);
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Block\BlockController::importAdditionalData()
+     */
+    protected function importAdditionalData($b, $blockNode)
+    {
+        $nodesToRemove = $blockNode->xpath('./data[@table="btImageSliderEntries"]/record/id');
+        if ($nodesToRemove) {
+            foreach ($nodesToRemove as $nodeToRemove) {
+                unset($nodeToRemove[0]);
+            }
+        }
+        parent::importAdditionalData($b, $blockNode);
+    }
 }

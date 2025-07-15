@@ -416,7 +416,8 @@ class Controller extends BlockController implements NotificationProviderInterfac
         $entityManager = $this->app->make(EntityManagerInterface::class);
 
         // Make sure our data goes through correctly.
-        $data['storeFormSubmission'] = isset($data['storeFormSubmission']) ?: 0;
+        $data['storeFormSubmission'] = !empty($data['storeFormSubmission']) ? 1 : 0;
+        $data['notifyMeOnSubmission'] = !empty($data['notifyMeOnSubmission']) ? 1 : 0;
 
         // Now, let's handle saving the form entity ID against the form block db record
         $entity = false;
@@ -471,6 +472,9 @@ class Controller extends BlockController implements NotificationProviderInterfac
 
         $session = $this->app->make('session');
         $session->remove('block.express_form.new');
+
+        // allow redirect on form submission to be unset
+        $data['redirectCID'] = ($data['redirectCID'] === '') ? 0 : $data['redirectCID'];
 
         return parent::save($data);
     }
@@ -550,6 +554,11 @@ class Controller extends BlockController implements NotificationProviderInterfac
     public function validate($args)
     {
         $e = $this->app->make('helper/validation/error');
+        if (!empty($args['notifyMeOnSubmission']) && filter_var($args['notifyMeOnSubmission'], FILTER_VALIDATE_BOOLEAN)) {
+            if (empty($args['recipientEmail'])) {
+                $e->add(t('The Send form submissions to email addresses box is checked. Please enter at least one email address.'));;
+            }
+        }
         if (!empty($args['recipientEmail'])) {
             $inputtedEmails = array_map('trim', explode(',', $args['recipientEmail']));
             $validator = new EmailValidator();
@@ -694,7 +703,8 @@ class Controller extends BlockController implements NotificationProviderInterfac
                 }
                 $notifier = $controller->getNotifier($this);
                 $notifications = $notifier->getNotificationList();
-                array_walk($notifications->getNotifications(), function ($notification) use ($submittedAttributeValues) {
+                $notificationList = $notifications->getNotifications();
+                array_walk($notificationList, function ($notification) use ($submittedAttributeValues) {
                     if (method_exists($notification, "setAttributeValues")) {
                         $notification->setAttributeValues($submittedAttributeValues);
                     }

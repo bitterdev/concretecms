@@ -26,7 +26,7 @@ class EntryBuilderTest extends ConcreteDatabaseTestCase
         'Groups',
     ];
 
-    protected $metadatas = [
+    protected $entityClassNames = [
         'Concrete\Core\Entity\Express\Entity',
         'Concrete\Core\Entity\Express\Entry',
         'Concrete\Core\Entity\Express\Entry\Association',

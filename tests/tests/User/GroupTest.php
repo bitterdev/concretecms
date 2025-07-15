@@ -559,17 +559,15 @@ class GroupTest extends UserTestCase
     /**
      * {@inheritdoc}
      *
-     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getMetadatas()
+     * @see \Concrete\TestHelpers\Database\ConcreteDatabaseTestCase::getEntityClassNames()
      */
-    protected function getMetadatas()
+    protected function getEntityClassNames(): array
     {
-        $this->metadatas = array_values(array_unique(array_merge($this->metadatas, [
+        return array_merge(parent::getEntityClassNames(), [
             Entity\User\GroupCreate::class,
             Entity\User\GroupSignup::class,
             Entity\User\GroupSignupRequest::class,
-        ])));
-
-        return parent::getMetadatas();
+        ]);
     }
 
     /**
@@ -579,12 +577,10 @@ class GroupTest extends UserTestCase
      */
     protected function getTables()
     {
-        $this->tables = array_values(array_unique(array_merge($this->tables, [
+        return array_merge(parent::getTables(), [
             'GroupSelectedRoles',
             'TreeGroupFolderNodes',
             'TreeGroupFolderNodeSelectedGroupTypes',
-        ])));
-
-        return parent::getTables();
+        ]);
     }
 }

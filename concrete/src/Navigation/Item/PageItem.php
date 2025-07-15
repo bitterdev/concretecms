@@ -23,12 +23,12 @@ class PageItem extends Item
      * @param string $name
      * @param bool $isActive
      */
-    public function __construct(Page $page = null, bool $isActive = false)
+    public function __construct(?Page $page = null, bool $isActive = false)
     {
         if ($page) {
             $this->pageID = $page->getCollectionID();
             $this->keywords = (string)$page->getAttribute("meta_keywords");
-            parent::__construct($this->getURL(), $page->getCollectionName(), $isActive);
+            parent::__construct($this->getURL(), (string) $page->getCollectionName(), $isActive);
         }
         if ($this->keywords === null) {
             $this->keywords = '';
