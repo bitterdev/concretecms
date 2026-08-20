@@ -66,3 +66,9 @@
  *
  * ----------------------------------------------------------------------------
  */
+/*
+ * Refuses to serve this installation against a storage location that is not
+ * local, so a production dump can never turn the development site into a writer
+ * on the live bucket again. See the file itself for why it sits on the request.
+ */
+require __DIR__ . '/dev-storage-guard.php';
