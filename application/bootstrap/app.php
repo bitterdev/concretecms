@@ -72,3 +72,13 @@
  * on the live bucket again. See the file itself for why it sits on the request.
  */
 require __DIR__ . '/dev-storage-guard.php';
+
+
+/*
+ * Gives the two error pages back the site tree of the request. Without it a page
+ * with siteTreeID 0 draws the navigation and the logo of the default site, which on
+ * the live multisite installation is bamg.ae. See the file itself.
+ */
+require __DIR__ . '/system-page-site-tree.php';
+
+$app->make(\Application\Provider\SystemPageSiteTree::class)->register();
