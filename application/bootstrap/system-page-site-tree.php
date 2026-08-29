@@ -9,10 +9,19 @@
  * happened to the JUNO-802 fix on the live host. Required by hand next to
  * dev-storage-guard.php, the same way that guard is wired in.
  *
- * THE NAMESPACE IS THE ONE THE LIVE INSTALLATION USES, so this file goes there
- * unchanged: /bamg.ae/httpdocs/application/src/Provider/, where its register() is
- * called from ServiceProvider::register() and replaces
- * restoreSiteTreeOnNotFoundPage(), which covered only the not found half.
+ * THE NAMESPACE IS THE ONE THE LIVE INSTALLATION USES, so the body of this file goes
+ * there unchanged. Read off that host on 30.08.2026, so the two steps are known and
+ * not guessed:
+ *   1. the class goes to /bamg.ae/httpdocs/application/src/Provider/ under the name
+ *      SystemPageSiteTree.php, because application/src is autoloaded PSR-4 and the
+ *      file has to carry the class name there;
+ *   2. in that directory's ServiceProvider.php the line
+ *      $this->restoreSiteTreeOnNotFoundPage(); in register() becomes
+ *      $this->app->make(SystemPageSiteTree::class)->register();
+ *      and the old method goes away. It compared one path, /page_not_found, and took
+ *      the tree of the site's DEFAULT locale.
+ * application/src is outside version control on both installations, so a push alone
+ * does not carry this over: the file has to be put there.
  */
 
 namespace Application\Provider;
