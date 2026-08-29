@@ -21,83 +21,151 @@ use Concrete\Core\Entity\Site\Locale;
 use Concrete\Core\Entity\Site\Site;
 use Concrete\Core\Entity\Site\Tree;
 use Concrete\Core\Foundation\Service\Provider;
+use Concrete\Core\Http\Request;
 use Concrete\Core\Localization\Localization;
 use Concrete\Core\Page\Page;
+use Concrete\Core\Page\View\PageView;
+use Concrete\Core\Site\Service as SiteService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
-/*
- * The core error pages are installation wide system pages and carry no site tree
- * (Pages.siteTreeID = 0). Everything that asks the current page for its site
- * therefore falls back to the default site, see Page::getHomePageID(). On a
- * multisite install an error on any site consequently rendered the default site's
- * home page id, which the autonav in the global header area uses as its root and
- * which the themes use for the logo link: a visitor of freshcast.de ended up with
- * the menu and the logo of bamg.ae. Attaching the tree that was actually asked for
- * restores the context before the theme is rendered.
+/**
+ * Gives a page that carries no site tree the tree of the request it is answering.
  *
- * This is the fix JUNO-802 put on /page_not_found, now written once for both error
- * pages. Fabian, 29.08.2026: "Das gleiche gibt es mit 403. Da ist die Navigation und
- * das Logo von BAMG gerendert. Das darf auf keinen Fall passieren."
+ * WHAT IS BROKEN. A handful of pages are installed once for the whole installation
+ * and live outside every site tree: Pages.siteTreeID is 0 for /page_not_found,
+ * /page_forbidden, /login, /register and everything under /account. Whatever asks
+ * such a page which site it belongs to gets nothing, and Page::getHomePageID then
+ * falls back to the DEFAULT locale of the DEFAULT site. Themes build their logo link
+ * and the root of their navigation out of exactly that value, see
+ * bitter_theme/elements/header.php: $homePage = Page::getByID(Page::getHomePageID(
+ * Page::getCurrentPage())). On the live multisite the default site is bamg.ae, so a
+ * visitor who was refused on freshcast.de was handed the menu and the logo of a
+ * different company. Fabian, 29.08.2026: "Da ist die Navigation und das Logo von
+ * BAMG gerendert. Das darf auf keinen Fall passieren."
+ *
+ * WHY THERE IS NO LIST OF PATHS HERE. The first two attempts at this named the
+ * pages: JUNO-802 compared against '/page_not_found', JUNO-1405 then made that a
+ * two entry constant. Both are the same mistake one size up. A named page has to be
+ * remembered on the day a new system page starts to matter, and nobody notices the
+ * omission until a visitor sees the wrong brand. Fabian, 29.08.2026: "Wieso prueft
+ * man nicht einfach in einem on_start-Handler in einem Service Provider nach der
+ * Adresse und vor allem nach der Seite ... Best Practices will ich haben bei
+ * Concrete CMS." So the question asked here is a property of the page, not its
+ * name: does this page know which house it is standing in? If it does not, and it
+ * is the page this request is being answered with, it is handed the house the
+ * request was made to. /login, /register, /account and every system page added
+ * later are covered by that without another line.
+ *
+ * WHERE IT HANGS. on_start of the view, dispatched by View::startRender() with the
+ * view as its argument, which is the earliest point at which the page object being
+ * drawn is in hand and still the earliest point before the theme writes a single
+ * link. It is deliberately NOT a listener on something every request touches: the
+ * view is asked for its page and everything that is not a page view is left alone,
+ * so the /ccm/ routes that broke the whole installation on 19.08.2026 never reach
+ * this code.
  */
 class SystemPageSiteTree extends Provider
 {
-    /**
-     * The system pages drawn in place of the page that was asked for. Deliberately
-     * a short list: /login and /register carry siteTreeID 0 as well, but they are
-     * not error pages and changing them is a decision of its own.
-     */
-    private const SYSTEM_PAGES = [
-        '/page_not_found',
-        '/page_forbidden',
-    ];
-
     public function register()
     {
         /** @var EventDispatcherInterface $eventDispatcher */
         $eventDispatcher = $this->app->make(EventDispatcherInterface::class);
 
-        $eventDispatcher->addListener('on_before_render', function () {
-            $c = Page::getCurrentPage();
-
-            if (!$c instanceof Page || $c->isError() || $c->getSiteTreeID()) {
-                return;
-            }
-
-            if (!in_array($c->getCollectionPath(), self::SYSTEM_PAGES, true)) {
-                return;
-            }
-
-            $tree = $this->treeOfActiveContext();
-
-            if ($tree instanceof Tree) {
-                $c->siteTree = $tree;
-            }
+        $eventDispatcher->addListener('on_start', function (GenericEvent $event) {
+            $this->giveBackTheTreeOfTheRequest($event->getArgument('view'));
         });
     }
 
     /**
-     * The tree of the language the request is being answered in, and the tree of the
-     * site's default locale where that cannot be told. The default locale alone is
-     * what JUNO-802 used; it names the right site but not the right language tree, so
-     * a Spanish visitor of a forbidden page kept getting the German menu of the same
-     * site.
+     * @param mixed $view whatever is being rendered, page view or not
      */
-    private function treeOfActiveContext(): ?Tree
+    private function giveBackTheTreeOfTheRequest($view): void
     {
-        $site = $this->app->make('site')->getSite();
+        if (!$view instanceof PageView) {
+            return;
+        }
+
+        $page = $view->getPageObject();
+
+        if (!$page instanceof Page || $page->isError()) {
+            return;
+        }
+
+        /*
+         * A page that has a tree is standing in its own house already, and the one
+         * thing that must not happen here is moving a page that is fine.
+         */
+        if ($page->getSiteTreeID()) {
+            return;
+        }
+
+        /*
+         * Only the page the request is actually being answered with. A stack, a theme
+         * preview or anything else drawn inside a page carries no tree either, and
+         * those are not what a visitor reads the brand off. ResponseFactory sets this
+         * for the error pages and the dispatcher for every other page.
+         */
+        $currentPage = $this->app->make(Request::class)->getCurrentPage();
+
+        if (!$currentPage instanceof Page || $currentPage->getCollectionID() != $page->getCollectionID()) {
+            return;
+        }
+
+        /*
+         * The dashboard is left alone on purpose. It brings its own chrome, it has no
+         * logo taken from a site tree, and it answers the question which site it is
+         * working on with getActiveSiteForEditing(), which is the editor's choice and
+         * not the domain that was typed. Handing it a tree would be a change to the
+         * back end nobody asked for.
+         */
+        if ($page->isAdminArea()) {
+            return;
+        }
+
+        $tree = $this->treeOfTheRequest();
+
+        if ($tree instanceof Tree) {
+            $page->siteTree = $tree;
+        }
+    }
+
+    /**
+     * The tree the request belongs to: the site the address was made to, in the
+     * language the answer is being written in.
+     *
+     * The site comes from Concrete's own resolver, which reads it off the domain of
+     * the request (Site\Resolver\MultisiteDriver), so it is the site that was asked
+     * for and not the default one. The language comes from the site localization
+     * context, which the multilingual detector fills in from the address before the
+     * controller runs (Detector::setupSiteInterfaceLocalization). Taking the default
+     * locale instead, as JUNO-802 did, names the right company but the wrong language
+     * tree, and a Spanish visitor kept getting the German menu.
+     */
+    private function treeOfTheRequest(): ?Tree
+    {
+        /** @var SiteService $siteService */
+        $siteService = $this->app->make(SiteService::class);
+        $site = $siteService->getSite();
 
         if (!$site instanceof Site) {
             return null;
         }
 
-        $activeLocale = Localization::activeLocale();
+        /** @var Localization $localization */
+        $localization = $this->app->make(Localization::class);
+        $locale = $localization->getContextLocale(Localization::CONTEXT_SITE);
 
-        foreach ($site->getLocales() as $locale) {
-            if (!$locale instanceof Locale || $locale->getLocale() !== $activeLocale) {
+        if (!$locale) {
+            $locale = Localization::activeLocale();
+        }
+
+        foreach ($site->getLocales() as $candidate) {
+            if (!$candidate instanceof Locale || $candidate->getLocale() !== $locale) {
                 continue;
             }
 
-            $tree = $locale->getSiteTreeObject();
+            $tree = $candidate->getSiteTreeObject();
 
             if ($tree instanceof Tree) {
                 return $tree;
