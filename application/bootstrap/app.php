@@ -82,3 +82,10 @@ require __DIR__ . '/dev-storage-guard.php';
 require __DIR__ . '/system-page-site-tree.php';
 
 $app->make(\Application\Provider\SystemPageSiteTree::class)->register();
+
+/*
+ * Builds a missing Doctrine proxy on demand. A package update deletes the proxies of
+ * all packages for a few seconds, and a request in that window died on it. See the
+ * file itself.
+ */
+require __DIR__ . '/proxy-on-demand.php';
